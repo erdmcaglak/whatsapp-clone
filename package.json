@@ -4,12 +4,21 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "unzip-test":"ssh root@172.16.88.190 -T /usr/bin/unzip -o -d /root/node/whapichat_server /root/node/whapichat_server/dist.zip"
   },
   "dependencies": {
+    "axios": "^0.26.1",
     "core-js": "^3.6.5",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.3",
+    "msw": "^0.39.2",
+    "qrcode": "^1.5.0",
+    "socket.io-client": "^4.4.1",
+    "uniqid": "^5.4.0",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
+    "vuetify": "^2.6.4",
     "vuex": "^3.4.0"
   },
   "devDependencies": {
@@ -17,9 +26,11 @@
     "@vue/cli-plugin-router": "~4.5.13",
     "@vue/cli-plugin-vuex": "~4.5.13",
     "@vue/cli-service": "~4.5.13",
-    "sass": "^1.26.5",
-    "sass-loader": "^8.0.2",
-    "vue-template-compiler": "^2.6.11"
+    "sass": "~1.32.0",
+    "sass-loader": "^10.0.0",
+    "vue-cli-plugin-vuetify": "~2.4.8",
+    "vue-template-compiler": "^2.6.11",
+    "vuetify-loader": "^1.7.0"
   },
   "browserslist": [
     "> 1%",

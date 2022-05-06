@@ -1,0 +1,34 @@
+@mixin d-flex-center {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin d-flex($direction,$justify,$align) {
+    display: flex;
+    flex-direction: $direction;
+    justify-content: $justify;
+    align-items: $align;
+}
+
+@mixin box-shadow($horizontal,$vertical,$blur,$spread,$color){
+    -webkit-box-shadow: $horizontal $vertical $blur $spread $color;
+    -moz-box-shadow: $horizontal $vertical $blur $spread $color;
+    -o-box-shadow: $horizontal $vertical $blur $spread $color;
+    box-shadow: $horizontal $vertical $blur $spread $color;
+}
+
+@mixin box-shadow-inset($horizontal,$vertical,$blur,$spread,$color){
+    -webkit-box-shadow: inset $horizontal $vertical $blur $spread $color;
+    -moz-box-shadow: inset $horizontal $vertical $blur $spread $color;
+    -o-box-shadow: inset $horizontal $vertical $blur $spread $color;
+    box-shadow: inset $horizontal $vertical $blur $spread $color;
+}
+
+@mixin backdrop-filter($filter) {
+    backdrop-filter: blur($filter);
+    -webkit-backdrop-filter: blur($filter);
+    -moz-backdrop-filter: blur($filter);
+    -o-backdrop-filter: blur($filter);
+}
