@@ -1,5 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import axios from "axios"
+import {SERVER_URL} from "@/control.js"
+import store from '@/store'
+import {cookieParser,cookieRemover} from "@/utils/utils.js"
 
 import Login from "@/views/Login.vue"
 import WuiAccounts from "@/views/WuiAccounts.vue"
@@ -12,6 +16,7 @@ import ApiDoc from "@/views/ApiDoc.vue"
 import Settings from "@/views/Settings.vue"
 import LoginSession from "@/views/LoginSession.vue"
 import WhatsappNumbers from "@/views/WhatsappNumbers.vue"
+import PaymentPackets from "@/views/PaymentPackets.vue"
 
 
 Vue.use(VueRouter)
@@ -28,14 +33,19 @@ const routes = [
     name:'WuiAccounts'
   },
   {
+    path:'/payment-packets',
+    component:PaymentPackets,
+    name:'PaymentPackets'
+  },
+  {
     path:'/whatsapp-numbers',
     component:WhatsappNumbers,
     name:'WhatsappNumbers'
   },
   {
-    path:'/send-receive',
+    path:'/dashboard',
     component:SendReceive,
-    name:'SendReceive'
+    name:'Dashboard'
   },
   {
     path:'/status-typing',
@@ -79,6 +89,68 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach(async (to, from, next) => {
+  if(to.path=='/'||to.path=='/payment-packets'||to.name=='Session'){
+    next();
+    return
+  }
+  else if(from.path=='/'){
+    let {token} = cookieParser();
+    if(token){
+      const response = await axios.post(`${SERVER_URL}/account/accounts`,{
+          token,
+        }).catch(err=>{
+          console.log({err})
+          store.commit('setAlert',{
+            title:'Server Error',
+            type:'danger'
+          })
+          next('/')
+          return
+        })
+        console.log('-----------accounts--------------')
+        console.log({response})
+      
+        if(!response){
+          store.commit('setAlert',{
+            title:'Unexpected Error',
+            type:'danger'
+          })
+          next('/')
+          return
+        }
+
+      
+        if(response.data?.success){
+          next()
+          store.commit('setAlert',{
+            title:'Login Succesful',
+            type:'success'
+          })
+          return
+        }
+        else{
+          store.commit('setAlert',{
+            title:'Please Login',
+            type:'warning'
+          })
+          next('/')
+          return
+        }
+      }
+      else{
+        store.commit('setAlert',{
+          title:'Please Login',
+          type:'warning'
+        })
+        next('/')
+        return
+      }
+    }
+    
+  next()
 })
 
 export default router

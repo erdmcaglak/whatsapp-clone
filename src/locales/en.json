@@ -1,3 +1,77 @@
 {
-    "temp":"Helloo"
+    "navbar":{
+        "loginButton":"SIGN IN/SIGN UP"
+    },
+    "menu":{
+        "nums":"Whatsapp Numbers",
+        "wuiAccounts":"W-UI Accounts",
+        "dashboard":"Dashboard",
+        "statusTyping":"Status/Typing",
+        "converter":"Converter",
+        "linkCreator":"Link Creator",
+        "panel":"User Panel",
+        "doc":"Documentation",
+        "settings":"Settings",
+        "logOut":"Logout"
+    },
+    "login":{
+        "promoText":"By using Whapi, you can easily send/receive WhatsApp messages through your own number.",
+        "noNeed":"No need to the Business API.",
+        "animationPromo":{
+            "rmmTitle":"RMM",
+            "rmmHeader":"RMM (Remote Messages Manager)",
+            "rmmContent":"By integrating the API into your systems, you can receive instant notifications of your alarms to your WhatsApp account.",
+            "statusTitle":"Status/Typing",
+            "statusHeader":"Status/Typing",
+            "statusContent":"You can view the typing and last seen information of your contacts in detail.",
+            "notificationTitle":"Notification",
+            "notificationHeader":"Notification for Your IoT and Other Devices",
+            "notificationContent":"You can view the typing and last seen information of your contacts in detail."
+        },
+        "tryFree":"TRY FREE",
+        "tryFreeText":"Start a 1 week Free Trial",
+        "privacy":"Privacy Policy",
+        "aboutUs":"About Us",
+        "paymentPromo":"ONLY API for $9.99/account",
+        "aboutPricing":"ABOUT PRICING",
+        "aboutUsModal":{
+            "item1":"KONNEKA Information and Communication Technologies, which started its working life at METU TEKMER in 2008 with the support of KOSGEB of the Ministry of Science, Industry and Technology, has been working at Ankara University Technology Development Zone dec 2012 to 2017 and Bilkent CYBERPARK since 2018 after graduation.",
+            "item2":"KONNEKA, which was established with the state incentives of our country, has produced products on the cyber security, network and communication sectors of our country since its inception and has continued its R & D activities decessantly.",
+            "item3":"As KONNEKA, our mission and vision is to contribute to both our country's own resources and the country's technology by developing 100% domestic and national products /software instead of products that are sold to our country for thousands of dollars of foreign origin.",
+            "item4":"Since its inception, that produces the need for hardware-software alternative to its customers with its products and konneka growing and reliable technologies of information and communication technologies in the industry, and technology consulting to many large corporations has become a firm is demanded.",
+            "item5":"Apart from ensuring the sustainability of our hardware and software solutions that we produce as Konneka, dec continuity of our R & D activities is the most important value of our company. Our research and DEVELOPMENT projects and collaborations with Tubitak, Kosgeb, Ankara University, Bilkent University, Cyberpark and many public institutions/organizations are continuing dec",
+            "footerItem":{
+                "numTitle":"+90 850 885 2008",
+                "locationTitle":"Bilkent Cyberpark 3/112 06800 Çankaya ANKARA",
+                "mailtitle":"info@konneka.com"
+            }
+        },
+        "privacyModal":{
+            "webSiteTitle":"WEBSITE PRIVACY POLICY",
+            "webSiteContent":"KONNEKA Information and Communication Technologies and Trade Ltd. Şti ('KONNEKA') has agreed in principle to ensure the confidentiality of the information shared by you who visit the website and all social media accounts. Therefore, this 'Privacy Policy' has been created to inform you by explaining which of your information is processed by Konneka in which ways and for what purpose in accordance with the law, which third parties this information is shared in accordance with the law and under the permission you have given, and in what way it is protected by KONNEKA. All services offered to you by KONNEKA through all kinds of channels and channels will be briefly referred to as 'Service'.",
+            "scopeTitle":"SCOPE OF PRIVACY POLICY",
+            "scopeContent":"KONNEKA may obtain and transfer information about you who receive the service within the scope of this Privacy Policy. Such information transfers are made in accordance with the conditions established by third parties and existing contracts with third parties, as well as current legal legislation in force. This Privacy Policy does not reflect the privacy practices of third parties to whom information is transferred, and Konneka is not responsible for their privacy policies or practices. This Privacy Policy konneka applications outside of their control, information collected by the third-party websites and platforms by third parties and links to social media platforms konneka collected via the website, or which konneka to be a sponsor or third-party internet sites titles, promotions and other advertisements or promotions are not valid. KONNEKA is not responsible for the processing of personal data collected, stored, shared and used by third parties through its websites.",
+            "partyTitle":"PARTY RECEIVING PERSONAL INFORMATION/DATA",
+            "partyContent":"Some of your personal data is processed by KONNEKA within the scope of the services provided. Such personal data may include: first name-last name, T.C. Identification number, information on nationality, mother's name, father's name, place of birth, date of birth, gender, tax number, Social Security number, signature information, photos, vehicle license plate, phone number, address, e-mail address, fax number, IP address, social media accounts, location information, information about your purchase of products or services, payment information at our site, the pages you are viewing, if you visit our site with your mobile device, data that identifies your mobile device and any other information that you expressly and in writing prefer to provide to us and that you approve or that we may obtain from third parties with your explicit consent can be accessed and processed by us."
+        },
+        "signCard":{
+            "signInText":"Sign In to Website",
+            "scanQr":"Scan QR and click link",
+            "expiredText":"Qr will change in {{qrExpired}} seconds",
+            "or":"or",
+            "openWhatsapp":"Open web.whatsapp",
+            "welcome":"Welcome Back !",
+            "closedCardText":"Login with your information to use the API",
+            "signIn":"SIGN IN",
+            "SignUpText":"Sign Up to Website",
+            "hi":"Hello !",
+            "createAccount":"Create Account",
+            "signUp":"SIGN UP"
+        }
+    },
+    "whatsappNumbers":{
+        "yourWaAccount":"Your WhatsApp Account",
+        "inputPlaceHolder":"Search"
+    }
+    
 }

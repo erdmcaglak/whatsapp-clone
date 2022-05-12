@@ -1,7 +1,5 @@
 <template>
-    <div>
-        LİNK CREATOR
-    </div>
+  
 </template>
 
 <script>

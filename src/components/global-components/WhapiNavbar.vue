@@ -5,7 +5,7 @@
         </div>
         <div class="lang-and-sign">
             <button v-if="$route.fullPath==='/'" @click="openSignCard" class="sign-button">
-                SIGN IN/SIGN UP
+                {{getLang.navbar.loginButton}}
             </button>
             <Icon 
                 pointer
@@ -72,7 +72,6 @@ export default {
                     this.signButton=true;
                 }, 1e3);
             }
-            
         }
     }
 }

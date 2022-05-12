@@ -7,14 +7,13 @@
             <div class="promo">
                 <WhapiNavbar/>
                 <div class="promo-text">
-                    By using Whapi, you can easily send/receive WhatsApp messages through your own number.
+                    {{getLang.login.promoText}}
                 </div>
-                
                 <transition name="fade" mode="out-in">
-                    <SignCard v-if="showSignCard"/>
+                    <SignCard v-if="getOpenSignModal"/>
                     <div v-else class="synchronicity-promo">
                         <div class="no-need">
-                            No need to the Business API.
+                            {{getLang.login.noNeed}}
                         </div>
                         <div class="animation-promo">
                             <div class="animation-headers">
@@ -24,71 +23,99 @@
                             </div>
                             <div class="animation-content">
                                 <div class="content-header">
-                                    {{animationPromoHeader}}
+                                    {{getLang.login.animationPromo[animationPromoHeader]}}
                                 </div>
                                 <div class="content-text">
-                                    {{animationPromoText}}
+                                    {{getLang.login.animationPromo[animationPromoText]}}
                                 </div>
                             </div>
                         </div>
                         <div class="try-free">
-                            <div class="try-free-button">
-                                TRY FREE
+                            <div @click="openSignCard" class="try-free-button">
+                                {{getLang.login.tryFree}}
                             </div>
                             <div class="try-free-text">
-                                Start a 1 week Free Trial
+                                {{getLang.login.tryFreeText}}
                             </div>
                         </div>
                     </div>
                 </transition>
                 <div class="footer">
                     <div class="privacy-and-about">
-                        <div class="privacy">
-                            Privacy Policy
+                        <div @click="openPrivacy" class="privacy">
+                            {{getLang.login.privacy}}
                         </div>
-                        <div class="about">
-                            About Us
+                        <div @click="openAbout" class="about">
+                            {{getLang.login.aboutUs}}
                         </div>
                     </div>
-                    <div v-if="showSignCard" class="footer-promo">
-                        ONLY API for $9.99/account
+                    <div v-if="getOpenSignModal" class="footer-promo">
+                        {{getLang.login.paymentPromo}}
                     </div>
-                    <div class="about-pricing">
-                        ABOUT PRICING
+                    <div @click="routePayment" class="about-pricing">
+                        {{getLang.login.aboutPricing}}
                     </div>
                 </div>
             </div>
         </div>
-        
+        <AboutUsModal :openModal.sync="openAboutUsModal" v-if="openAboutUsModal"/>
+        <PrivacyPolicy :openPrivacy.sync="openPrivacyModal" v-if="openPrivacyModal"/>
     </div>
 </template>
 
 <script>
 import SignCard from "@/components/login-components/SignCard.vue"
+import AboutUsModal from "@/components/login-components/AboutUsModal.vue"
+import PrivacyPolicy from "@/components/login-components/PrivacyPolicyModal.vue"
 import WhapiNavbar from "@/components/global-components/WhapiNavbar.vue"
 import {mapGetters,mapMutations} from "vuex"
 import {animationPromo} from "@/enum/enum.js"
 import {SERVER_URL} from "@/control.js"
 import axios from "axios"
+import {utidCreator,cookieSetter,cookieParser} from "@/utils/utils.js"
 export default {
     data(){
         return{
+            openAboutUsModal:false,
+            openPrivacyModal:false,
+            signButton:true,
             widthInterval:null,
-            showSignCard:false,
             animationPromo,
             selectedHeader:"rmm",
             headerList:[
                 "rmm",
                 "status",
                 "notification"
-            ]
+            ],
+            x:null,
+            y:null,
         }
     },
     components:{
         WhapiNavbar,
         SignCard,
+        AboutUsModal,
+        PrivacyPolicy,
     },
     methods:{
+        openPrivacy(){
+            this.openPrivacyModal = true
+        },
+        openAbout(){
+            this.openAboutUsModal =true;
+        },
+        routePayment(){
+            this.$router.push(this.$route.query.redirect || '/payment-packets');
+        },
+        openSignCard(){
+            if(this.signButton){
+                this.setOpenSignModal(!this.getOpenSignModal);
+                this.signButton=false;
+                setTimeout(() => {
+                    this.signButton=true;
+                }, 1e3);
+            }
+        },
         ...mapMutations([
             "setOpenSignModal",
             "setAlert",
@@ -102,10 +129,16 @@ export default {
             return this.animationPromo.find(e=>e.value===this.selectedHeader).header;
         },
         ...mapGetters([
-            "getOpenSignModal"
+            "getOpenSignModal",
+            "getLang"
         ])
     },
-    mounted(){
+    destroyed(){
+        clearInterval(this.x)
+        clearInterval(this.y)
+    },
+    async mounted(){
+        utidCreator();
         let i = 0;
         setInterval(() => {
             if(i===3)
@@ -113,41 +146,72 @@ export default {
             this.selectedHeader=this.headerList[i];
             i++;
         }, 3e3);
+        
+        if(cookieParser().token){
+            const response = await axios.post(`${SERVER_URL}/account/accounts`,{
+                token:cookieParser().token
+            }).catch(err=>{
+                console.log('Error in /account/accounts');
+                console.log({err})
+            })
+            if(!response){
+                console.log({response})
+            }
+            else{
+                if(response.data.success){
+                    this.$router.push(this.$route.query.redirect || `/whatsapp-numbers`);
+                }
+            }
+            
+        }
+        
 
-        const token = window.localStorage.getItem('utid');
-        let x = setInterval(async () => {
-            const response = await axios.post(`${SERVER_URL}/login/agent/${token}`,{}).then(response=>{
+        this.x = setInterval(async () => {
+            //todo logout olduktan sonra backend 'e tokenları gönder expired yap yeni token üretmeye başla
+            let token1 = window.localStorage.getItem('utid-1').split('-')[0];
+            console.log({before:cookieParser()})
+            axios.post(`${SERVER_URL}/login/agent/${token1}`,{}).then(response=>{
                 if(response.data.token){
-                    document.cookie = `token=${response.data.token}`
-                    clearInterval(x)
-                    this.$router.push(this.$route.query.redirect || '/wui-account');
-                    this.setAlert({
-                        title:'Login Succesful!',
-                        type:'success',
-                    })
+                    cookieSetter('token',response.data.token)
+                    console.log({responseToken:response.data.token})
+                    clearInterval(this.x)
+                    clearInterval(this.y)
+                    setTimeout(() => {
+                        this.$router.push(this.$route.query.redirect || '/whatsapp-numbers');
+                        console.log({cookieAfter1s:cookieParser()})
+                    }, 1e3);
                 }
             }).catch(err=>{
                 console.log('Error in login/agent/:uid')
                 console.log({err})
             })
-            console.log({response})
             
         }, 1e4);
-
-        console.log(document.cookie)
         
-    },
-    watch:{
-        getOpenSignModal:{
-            handler(){
-                if(this.getOpenSignModal === true)
-                    this.showSignCard = true; 
-                else
-                    this.showSignCard=false;
-               
+        this.y = setInterval(async () => {
+            if(window.localStorage.getItem('utid-2')){
+                console.log({before:cookieParser()})
+
+                let token2 = window.localStorage.getItem('utid-2').split('-')[0];
+                axios.post(`${SERVER_URL}/login/agent/${token2}`,{}).then(response=>{
+                    if(response.data.token){
+                        cookieSetter('token',response.data.token)
+                        console.log({responseToken:response.data.token})
+                        clearInterval(this.y)
+                        clearInterval(this.x)
+                        setTimeout(() => {
+                            this.$router.push(this.$route.query.redirect || '/whatsapp-numbers');
+                            console.log({cookieAfter1s:cookieParser()})
+                        }, 1e3);
+                    }
+                }).catch(err=>{
+                    console.log('Error in login/agent/:uid')
+                    console.log({err})
+                })
             }
-        }
-    }
+            
+        }, 1e4);
+    },
 }
 </script>
 
@@ -302,5 +366,6 @@ export default {
             }
         }
     }
+    
 }
 </style>

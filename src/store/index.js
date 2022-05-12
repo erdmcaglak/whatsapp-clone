@@ -10,8 +10,20 @@ export default new Vuex.Store({
     isOpenSmalledMenu:false,
     openSignModal:false,
     alert:{},
+    userInfo:{},
+    whapiNumberList:[],
+    isCanBuyFreePackage:true,
   },
   mutations: {
+    setIsCanBuyFreePackage(state,item){
+      state.isCanBuyFreePackage = item
+    },
+    setWhapiNumberList(state,item){
+      state.whapiNumberList = item
+    },
+    setUserInfo(state,item){
+      state.userInfo = {...item}
+    },
     setAlert(state,item){
       state.alert = _.cloneDeep(item)
     },
@@ -26,6 +38,15 @@ export default new Vuex.Store({
     }
   },
   getters:{
+    getIsCanBuyFreePackage(state){
+      return state.isCanBuyFreePackage;
+    },
+    getWhapiNumberList(state){
+      return state.whapiNumberList;
+    },
+    getUserInfo(state){
+      return state.userInfo
+    },
     getAlert(state){
       return state.alert;
     },

@@ -1,12 +1,13 @@
 <template>
-    <div>
-        STATUS TYPİNG
-    </div>
+    <BuyPack/>
 </template>
 
 <script>
+import BuyPack from "@/components/global-components/BuyPack.vue"
 export default {
-
+    components:{
+        BuyPack
+    }
 }
 </script>
 

@@ -1,49 +1,21 @@
 <template>
-    <Loading/>
+    <div class="login-session-main">
+        <div class="loading-screen">
+            <div class="loading-item">
+                <div class="loading-text">
+                    {{loadingText}}
+                </div>
+                <div class="dots-bars-6"></div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
-import axios from "axios"
-import {SERVER_URL} from "@/control.js"
-import {mapMutations} from "vuex"
-import {cookieSetter} from "@/utils/utils.js"
-import Loading from "@/generic_components/loading/Loading.vue"
 export default {
-    
-    methods:{
-        ...mapMutations([
-            "setAlert",
-        ])
+    props:{
+      loadingText:{type:String,default:'Loading'}
     },
-    components:{
-      Loading,
-    },
-    async mounted(){
-        await axios.post(`${SERVER_URL}/login/session`,{
-            token:this.$route.params.token
-        }).then(response=>{
-            if(response.data.token){
-                
-                this.setAlert({
-                    title:'Login Succesful!',
-                    type:'success',
-                })
-                cookieSetter('token',response.data.token)
-                this.$router.push(this.$route.query.redirect || '/whatsapp-numbers');
-                
-            }
-            else{
-                this.$router.push(this.$route.query.redirect || '/');
-                this.setAlert({
-                    title:'Login Failed!',
-                    type:'danger',
-                })
-            }
-        }).catch(err=>{
-            console.log('Err in /login/session')
-            console.log({err})
-        })
-    }
 }
 </script>
 

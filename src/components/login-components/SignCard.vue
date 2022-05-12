@@ -9,25 +9,25 @@
                 </div>
                 <div class="sign-main">
                     <div class="sign-text">
-                        Sign In to Website
+                        {{getLang.login.signCard.signInText}}
                         <div class="scan-qr-and-click-link">
-                            Scan QR and click link
+                            {{getLang.login.signCard.scanQr}}
                         </div>
                     </div>
                     <div class="buttons-and-qr">
                         <div class="qr">
                             <img class="whatsapp-qr" :src="signInQrUrl" alt="">
                             <div class="expired">
-                                Qr will change in {{qrExpired}} seconds
+                                {{textReplace(getLang.login.signCard.expiredText)}}
                             </div>
                         </div>
                         <div class="or">
-                            or
+                            {{getLang.login.signCard.or}}
                         </div>
                         <div class="web-whatsapp-button">
                             <img class="whatsapp-filled-icon" src="@/assets/icons/whatsapp-filled.svg" alt="">
-                            <a target="_blank" :href="`https://web.whatsapp.com/send?phone=${this.whapiNumber}&text=${encodeURIComponent(`Let me login,token=${this.$utid}`)}`" class="web-whatsapp">
-                                Open web.whatsapp
+                            <a target="_blank" :href="`https://web.whatsapp.com/send?phone=${whapiNumber}&text=${encodeURIComponent(`Let me login,token=${this.$utid.split('-')[0]}`)}`" class="web-whatsapp">
+                                {{getLang.login.signCard.openWhatsapp}}
                             </a>
                         </div>
                     </div>
@@ -36,13 +36,13 @@
                 <transition name="sign-up-slide">
                     <div v-if="selectedCard==='signIn'" class="closed-card">
                         <div class="welcome-back">
-                            Welcome Back !
+                            {{getLang.login.signCard.welcome}}
                         </div>
                         <div class="closed-card-text">
-                            Login with your information to use the API
+                            {{getLang.login.signCard.closedCardText}}
                         </div>
                         <button @click="changeCard('signUp')" class="sign-up-button">
-                            SIGN IN
+                            {{getLang.login.signCard.signIn}}
                         </button>
                     </div>
                 </transition>
@@ -56,9 +56,9 @@
                 </div>
                 <div class="sign-main">
                     <div class="sign-text">
-                        Sign Up to Website
+                        {{getLang.login.signCard.SignUpText}}
                         <div class="scan-qr-and-click-link">
-                            Scan QR and click link
+                            {{getLang.login.signCard.scanQr}}
                         </div>
                     </div>
                     <div class="buttons-and-qr">
@@ -66,12 +66,12 @@
                             <img class="whatsapp-qr" :src="signUpQrUrl" alt="">
                         </div>
                         <div class="or">
-                            or
+                            {{getLang.login.signCard.or}}
                         </div>
                         <div class="web-whatsapp-button">
                             <img class="whatsapp-filled-icon" src="@/assets/icons/whatsapp-filled.svg" alt="">
                             <a target="_blank" :href="`https://web.whatsapp.com/send?phone=${whapiNumber}&text=${encodeURIComponent('Let me register')}`" class="web-whatsapp">
-                                Open web.whatsapp
+                                {{getLang.login.signCard.openWhatsapp}}
                             </a>
                         </div>
                     </div>
@@ -79,14 +79,14 @@
                 <transition name="sign-in-slide">
                     <div v-if="selectedCard==='signUp'" class="closed-card">
                         <div class="welcome-back">
-                            Hello !
+                            {{getLang.login.signCard.hi}}
                         </div>
                         <div class="closed-card-text-signup">
                             <div class="header">
-                                Create Account
+                                {{getLang.login.signCard.createAccount}}
                             </div>
                             <div class="text">
-                                Login with your information to use the API
+                                {{getLang.login.signCard.closedCardText}}
                             </div>
                         </div>
                         <!-- <Button 
@@ -98,7 +98,7 @@
                             radius="10"
                         /> -->
                         <button @click="changeCard('signIn')" class="sign-up-button">
-                            SIGN UP
+                            {{getLang.login.signCard.signUp}}
                         </button>
                     </div>
                 </transition>
@@ -109,7 +109,7 @@
                 <a target="_blank" :href="`https://api.whatsapp.com/send?phone=${whapiNumber}&text=${encodeURIComponent('Let me register')}`" class="web-whatsapp">
                     Register
                 </a>
-                <a target="_blank" :href="`https://api.whatsapp.com/send?phone=${this.whapiNumber}&text=${encodeURIComponent(`Let me login,token=${this.$utid}`)}`" class="web-whatsapp">
+                <a target="_blank" :href="`https://api.whatsapp.com/send?phone=${whapiNumber}&text=${encodeURIComponent(`Let me login,token=${this.$utid.split('-')[0]}`)}`" class="web-whatsapp">
                     Login
                 </a>
             </div>
@@ -123,6 +123,12 @@ import {whapiNumber} from "@/control.js"
 import Button from "@/generic_components/buttons/Button.vue"
 import uniqid from "uniqid"
 import Vue from "vue"
+import axios from "axios"
+import {SERVER_URL} from "@/control.js"
+import moment from "moment"
+import browser from 'browser-detect'
+import {mapGetters} from "vuex"
+import {utidCreator} from "@/utils/utils.js"
 export default {
     components:{
         Button
@@ -139,11 +145,17 @@ export default {
         }
     },
     methods:{
+        textReplace(item){
+            return item.replace("{{qrExpired}}",this.qrExpired);
+        },
         changeCard(item){
             this.selectedCard = item;
         }
     },
     computed:{
+        ...mapGetters([
+            "getLang",
+        ]),
         qrExpired(){
             return (60-this.qrCount)<10 ? `0${60-this.qrCount}`:`${60-this.qrCount}`
         }
@@ -152,6 +164,11 @@ export default {
         clearInterval(this.qrInterval)
     },
     mounted(){
+        if((Date.now() - parseInt(this.$utid.split('-')[1]))>120000){
+            utidCreator();
+        }
+        this.qrCount = moment.duration(Date.now() - parseInt(this.$utid.split('-')[1])).seconds();
+        console.log(Date.now() - parseInt(this.$utid.split('-')[1]));
         this.windowWidth = window.innerWidth;
         let data = this;
         let opts = {
@@ -160,18 +177,41 @@ export default {
             quality: 0.3,
             margin: 0,
         }
-        // TODO expire token 2 adet olacak toplamda 2 dklık control sağlancak ve agent bilgisi yeni token için tek seferlik gönderilecek
-        // TODO /session/:token a loading eklenecek
-        // TODO account sayfası mock ile yapılacak
-        // TODO login sayfasındaki bütün butonlar boş olsa dahi çalışacak
+        //todo chatleşmeye başlandığı an loading başlat
         // TODO privacy ve about us modal yapılacak
-        // TODO login için dil desteği yapılacak
-        this.qrInterval = setInterval(() => {
+        //console.log(moment.duration(Date.now() - parseInt(this.$utid.split('-')[1])).seconds())
+        this.qrInterval = setInterval(async () => {
             this.qrCount++
+            //console.log(this.qrCount)
             if(this.qrCount === 60){
-                window.localStorage.setItem('utid',uniqid())
-                Vue.prototype.$utid = window.localStorage.getItem('utid')
-                QRCode.toDataURL(`https://api.whatsapp.com/send?phone=${this.whapiNumber}&text=${encodeURIComponent(`Let me login,token=${this.$utid}`)}`,opts, function (err, url) {
+                window.localStorage.setItem('utid-1',this.$utid);
+                window.localStorage.setItem('utid-2',`${uniqid()}-${Date.now()}`);
+                Vue.prototype.$utid = window.localStorage.getItem('utid-2')
+                let browserInfo = browser();
+                const res = await axios.get('https://ifconfig.me').catch(err=>{
+                    console.log({err})
+                })
+                
+                let ipv4 = res.data;
+                const resp = await axios.get(`https://ipapi.co/${ipv4}/json`).catch(err=>{
+                    console.log({err})
+                });
+                let location = resp.data;
+
+                const agentObj = {
+                    uid:this.$utid.split('-')[0],
+                    agent:{
+                    ip:ipv4,
+                    location,
+                    browserInfo,
+                    }
+                }
+                const response = await axios.post(`${SERVER_URL}/login/agent`,agentObj).catch(err=>{
+                    console.log('Error in login/agent')
+                    console.log({err})
+                })
+                //console.log({response})
+                QRCode.toDataURL(`https://api.whatsapp.com/send?phone=${this.whapiNumber}&text=${encodeURIComponent(`Let me login,token=${this.$utid.split('-')[0]}`)}`,opts, function (err, url) {
                     data.signInQrUrl = url;
                 })
                 this.qrCount = 0;
@@ -180,7 +220,7 @@ export default {
         QRCode.toDataURL(`https://api.whatsapp.com/send?phone=${this.whapiNumber}&text=${encodeURIComponent('Let me register')}`,opts, function (err, url) {
             data.signUpQrUrl = url;
         })
-        QRCode.toDataURL(`https://api.whatsapp.com/send?phone=${this.whapiNumber}&text=${encodeURIComponent(`Let me login,token=${this.$utid}`)}`,opts, function (err, url) {
+        QRCode.toDataURL(`https://api.whatsapp.com/send?phone=${this.whapiNumber}&text=${encodeURIComponent(`Let me login,token=${this.$utid.split('-')[0]}`)}`,opts, function (err, url) {
             data.signInQrUrl = url;
         })
     }
@@ -224,6 +264,8 @@ export default {
             @include box-shadow-inset(0px,4px,4px,0px,rgba(192, 171, 227, 0.25))
         }
         .whapi-logo{
+            user-select: none;
+            pointer-events: none;
             width: 100%;
             padding: 20px;
             @include d-flex(row,flex-start,center);
@@ -258,6 +300,8 @@ export default {
                         width: 300px;
                         height: 300px;
                         padding: 0;
+                        pointer-events: none;
+                        user-select: none;
                     }
                     .expired{
                         font-size: 1.5rem;
@@ -276,6 +320,8 @@ export default {
                     @include d-flex(column,space-evenly,center);
                     .whatsapp-filled-icon{
                         width: 60px;
+                        pointer-events: none;
+                        user-select: none;
                     }
                     a,
                     a:visited,a:link,a:active {

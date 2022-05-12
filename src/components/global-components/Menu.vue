@@ -1,6 +1,20 @@
 <template>
     <div v-if="!getIsOpenSmalledMenu && !isSmalled" class="menu-main">
         <div class="menu-items-wrapper">
+            <div class="user-info">
+                <Icon 
+                    icon="user.svg"
+                    :width="{
+                        default:'25',
+                        lg:'23',
+                        md:'21',
+                        sm:'19',
+                        xs:'17',
+                    }"
+                    iconColor="#585858"
+                />
+                {{nameSurname}}
+            </div>
             <router-link tag="div" :to="item.api" v-for="(item,i) in menuItems" :key="'menuItems'+i" class="menu-items" active-class="active-menu-items">
                 <div class="menu-items-icon">
                     <Icon
@@ -16,11 +30,11 @@
                     />
                 </div>
                 <div class="menu-items-text">
-                    {{item.title}}
+                    {{getLang.menu[item.title]}}
                 </div>
             </router-link>
         </div>
-        <div @mouseenter="isOverLogout=true" @mouseleave="isOverLogout=false" class="logout-wrapper">
+        <div @click="logOut" @mouseenter="isOverLogout=true" @mouseleave="isOverLogout=false" class="logout-wrapper">
             <Icon 
                 icon="logout.svg"
                 :width="{
@@ -33,7 +47,7 @@
                 :iconColor="isOverLogout ? '#fff':'#585858'"
             />
             <div class="logout-text">
-                Logout
+                {{getLang.menu.logOut}}
             </div>
         </div>
     </div>
@@ -55,7 +69,7 @@
                         />
                     </div>
                     <div class="smalled-menu-items-text">
-                        {{item.title}}
+                        {{getLang.menu[item.title]}}
                     </div>
                 </router-link>
                 <div @mouseenter="isOverLogout=true" @mouseleave="isOverLogout=false" class="smalled-logout-wrapper">
@@ -71,7 +85,7 @@
                         :iconColor="isOverLogout ? '#fff':'#585858'"
                     />
                     <div class="smalled-logout-text">
-                        Logout
+                        {{getLang.menu.logOut}}
                     </div>
                 </div>
             </div>
@@ -95,12 +109,18 @@
 </template>
 
 <script>
+//todo axioslar tek dosyada toplancak
 import Icon from "@/generic_components/icons/Icons.vue"
 import {menuItems} from "@/enum/enum.js"
 import {mapGetters,mapMutations} from "vuex"
+import {SERVER_URL} from "@/control.js"
+import axios from "axios"
+import _ from "lodash"
+import {cookieParser,cookieRemover} from "@/utils/utils.js"
 export default {
     data(){
         return{
+            nameSurname:"",
             menuItems,
             isOverLogout:false,
             isSmalled:false,
@@ -109,7 +129,30 @@ export default {
     components:{
         Icon
     },
-    mounted(){
+    async mounted(){
+        let {token} = cookieParser();
+        const response = await axios.post(`${SERVER_URL}/account/info`,{
+            token,
+        }).catch(err=>{
+            console.log('Error in account/info')
+            console.log({err})
+            //this.$router.push(this.$route.query.redirect || `/`);
+        })
+        console.log('--------- infoo ----------')
+        console.log({response})
+        if(!response){
+            //this.$router.push(this.$route.query.redirect || `/`);
+            return
+        }
+
+        if(response.data){
+            
+            this.nameSurname= _.startCase(response.data.name)+ ' ' + _.upperCase(response.data.surname)
+            this.setAlert({
+                title:`Welcome to Whapi ${this.nameSurname}`,
+                type:'success'
+            })
+        }
         if(window.innerWidth <= 768 && !this.isSmalled)
             this.isSmalled = true
         else if(window.innerWidth > 768 && this.isSmalled)
@@ -124,12 +167,81 @@ export default {
     },
     computed:{
         ...mapGetters([
-            "getIsOpenSmalledMenu"
+            "getIsOpenSmalledMenu",
+            "getLang",
+            "getUserInfo"
         ]),
     },
     methods:{
+        uidControl(){
+            if(window.localStorage.getItem('utid-1') && window.localStorage.getItem('utid-2'))
+                return [`${window.localStorage.getItem('utid-1').split('-')[0]}`,`${window.localStorage.getItem('utid-2').split('-')[0]}`]
+            
+            else if(window.localStorage.getItem('utid-1'))
+                return [`${window.localStorage.getItem('utid-1').split('-')[0]}`]
+            else
+                return []
+        },
+        async logOut(){
+            // const response = await axios.post(`${SERVER_URL}/logout/expire`,{
+            //     uidList:this.uidControl(),
+            // }).catch(err=>{
+            //     console.log('Error in /logout/expired');
+            //     console.log({err})
+            //     this.setAlert({
+            //         title:'Logout Failed',
+            //         type:'danger'
+            //     })
+            // })
+
+            // console.log({response})
+            
+            // if(!response){
+            //     this.setAlert({
+            //         title:'Logout Failed',
+            //         type:'danger'
+            //     })
+            // }
+            // else{
+            //     if(response.data?.success){
+            //         cookieRemover('token');
+            //         if(window.localStorage.getItem('utid-1')){
+            //             window.localStorage.removeItem('utid-1')
+            //         }
+                    
+            //        if(window.localStorage.getItem('utid-2'))
+            //             window.localStorage.removeItem('utid-2')
+                    
+            //         this.$router.push(this.$route.query.redirect || '/');
+            //         this.setAlert({
+            //             title:"Logout Succesful",
+            //             type:'success',
+            //         })
+            //     }
+            //     else{
+            //         this.setAlert({
+            //             title:'Logout Failed',
+            //             type:'danger'
+            //         })
+            //     }
+            // }
+            cookieRemover('token');
+                if(window.localStorage.getItem('utid-1')){
+                    window.localStorage.removeItem('utid-1')
+                }
+
+                if(window.localStorage.getItem('utid-2'))
+                    window.localStorage.removeItem('utid-2')
+
+                this.$router.push(this.$route.query.redirect || '/');
+                this.setAlert({
+                    title:"Logout Succesful",
+                    type:'success',
+                })
+        },
         ...mapMutations([
-            "setIsOpenSmalledMenu"
+            "setIsOpenSmalledMenu",
+            "setAlert"
         ]),
         closeSmalledMenu(){
             this.setIsOpenSmalledMenu(true);
@@ -141,7 +253,7 @@ export default {
 <style lang="scss">
 @import "@/scss/mixins.scss";
 .menu-main{
-    background-color: #EEEEEE;
+    background: linear-gradient(180deg, #D8F0FE 0%, #DFE9FE 100%);
     height: 100%;
     flex: 0 0 270px;
     @include d-flex(column,space-between,stretch);
@@ -157,6 +269,13 @@ export default {
         @include d-flex(column,flex-start,stretch);
         gap: 5px;
         padding: 5px 0;
+        .user-info{
+            @include d-flex(row,flex-start,center);
+            gap: 15px;
+            padding: 10px 15px;
+            color: #585858;
+            border-bottom: 1px solid #585858;
+        }
         .menu-items{
             color: #585858;
             cursor: pointer;
@@ -182,12 +301,12 @@ export default {
                 @include d-flex(row,flex-start,center);
             }
             &:hover{
-                background-color: rgb(220, 220, 220);
+                background-color: #fff;
             }
         }
         .active-menu-items{
             @extend .menu-items;
-            background-color: rgb(220, 220, 220);
+            background-color: #fff;
         }
     }
     .logout-wrapper{

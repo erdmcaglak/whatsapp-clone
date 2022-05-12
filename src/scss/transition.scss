@@ -1,3 +1,4 @@
+// Transition Fade
 .fade-enter{
     opacity: 0;
 }
@@ -5,12 +6,57 @@
     transition: opacity .3s;
 }
 .fade-leave{
-    
 }
 .fade-leave-active{
-    transition: opacity .1s;
     opacity: 0;
 }
+
+.route-fade-enter-active,
+.route-fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.route-fade-enter-from,
+.route-fade-leave-to {
+  opacity: 0;
+}
+
+//Transition Slide
+
+.slide-enter{
+
+}
+.slide-enter-active{
+    animation: slide-left .3s linear forwards;
+}
+.slide-leave{
+    
+}
+.slide-leave-active{
+    animation: slide-right .3s linear forwards;
+}
+
+@keyframes slide-left {
+    from{
+        transform: translateX(100%);
+    }
+    to{
+        transform: translateX(0);
+    }
+}
+@keyframes slide-right {
+    from{
+        transform: translateX(0);
+    }
+    to{
+        transform: translateX(-100%);
+    }
+}
+
+
+
+
+
 
 .sign-up-slide-enter{
 

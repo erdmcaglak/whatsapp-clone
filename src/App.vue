@@ -1,11 +1,13 @@
 <template>
   <div class="main">
-    <Menu v-if="$route.fullPath!='/' && $route.name!='Session'"/>
+    <Menu v-if="$route.fullPath!='/' && $route.name!='Session' && $route.name!='PaymentPackets'"/>
     <div class="main-wrapper">
       <Navbar v-if="$route.fullPath!='/'" />
-      <router-view></router-view>
+      <transition name="route-fade" mode="out-in">
+        <router-view></router-view>
+      </transition>
+      
     </div>
-    
     <Alert :err="getAlert"/>
   </div>
 </template>
@@ -37,6 +39,7 @@ export default {
 
 <style lang="scss">
 @import "@/scss/mixins.scss";
+@import "@/scss/transition.scss";
 @font-face {
   font-family: jost;
   src: url('./assets/fonts/Jost-Regular.ttf');
@@ -60,6 +63,7 @@ export default {
   background-attachment: fixed;
   background-size: cover;
   .main-wrapper{
+    contain: content;
     width: 100%;
     height: 100%;
     @include d-flex(column,flex-start,flex-start);
