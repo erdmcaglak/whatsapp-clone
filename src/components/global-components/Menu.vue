@@ -183,61 +183,48 @@ export default {
                 return []
         },
         async logOut(){
-            // const response = await axios.post(`${SERVER_URL}/logout/expire`,{
-            //     uidList:this.uidControl(),
-            // }).catch(err=>{
-            //     console.log('Error in /logout/expired');
-            //     console.log({err})
-            //     this.setAlert({
-            //         title:'Logout Failed',
-            //         type:'danger'
-            //     })
-            // })
-
-            // console.log({response})
-            
-            // if(!response){
-            //     this.setAlert({
-            //         title:'Logout Failed',
-            //         type:'danger'
-            //     })
-            // }
-            // else{
-            //     if(response.data?.success){
-            //         cookieRemover('token');
-            //         if(window.localStorage.getItem('utid-1')){
-            //             window.localStorage.removeItem('utid-1')
-            //         }
-                    
-            //        if(window.localStorage.getItem('utid-2'))
-            //             window.localStorage.removeItem('utid-2')
-                    
-            //         this.$router.push(this.$route.query.redirect || '/');
-            //         this.setAlert({
-            //             title:"Logout Succesful",
-            //             type:'success',
-            //         })
-            //     }
-            //     else{
-            //         this.setAlert({
-            //             title:'Logout Failed',
-            //             type:'danger'
-            //         })
-            //     }
-            // }
-            cookieRemover('token');
-                if(window.localStorage.getItem('utid-1')){
-                    window.localStorage.removeItem('utid-1')
-                }
-
-                if(window.localStorage.getItem('utid-2'))
-                    window.localStorage.removeItem('utid-2')
-
-                this.$router.push(this.$route.query.redirect || '/');
+            const response = await axios.post(`${SERVER_URL}/logout/expire`,{
+                uidList:this.uidControl(),
+            }).catch(err=>{
+                console.log('Error in /logout/expired');
+                console.log({err})
                 this.setAlert({
-                    title:"Logout Succesful",
-                    type:'success',
+                    title:'Logout Failed',
+                    type:'danger'
                 })
+            })
+
+            console.log({response})
+            
+            if(!response){
+                this.setAlert({
+                    title:'Logout Failed',
+                    type:'danger'
+                })
+            }
+            else{
+                if(response.data?.success){
+                    cookieRemover('token');
+                    if(window.localStorage.getItem('utid-1')){
+                        window.localStorage.removeItem('utid-1')
+                    }
+                    
+                   if(window.localStorage.getItem('utid-2'))
+                        window.localStorage.removeItem('utid-2')
+                    
+                    this.$router.push(this.$route.query.redirect || '/');
+                    this.setAlert({
+                        title:"Logout Succesful",
+                        type:'success',
+                    })
+                }
+                else{
+                    this.setAlert({
+                        title:'Logout Failed',
+                        type:'danger'
+                    })
+                }
+            }
         },
         ...mapMutations([
             "setIsOpenSmalledMenu",

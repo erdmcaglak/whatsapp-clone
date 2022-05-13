@@ -231,7 +231,6 @@
 </template>
 
 <script>
-//todo axioslar generic dosyaya taşıncak
 import {mapGetters,mapMutations} from "vuex"
 import {whapiNumberList} from "@/enum/enum.js"
 import Icon from "@/generic_components/icons/Icons.vue"

@@ -57,7 +57,6 @@
 </template>
 
 <script>
-//todo terminale düşen input parselanıp istek atılacak
 import {cookieParser,stringShorter} from "@/utils/utils.js"
 import Icon from "@/generic_components/icons/Icons.vue"
 import _ from "lodash"

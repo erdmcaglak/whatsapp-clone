@@ -177,7 +177,6 @@ export default {
             quality: 0.3,
             margin: 0,
         }
-        //todo chatleşmeye başlandığı an loading başlat
         // TODO privacy ve about us modal yapılacak
         //console.log(moment.duration(Date.now() - parseInt(this.$utid.split('-')[1])).seconds())
         this.qrInterval = setInterval(async () => {

@@ -167,7 +167,6 @@ export default {
         
 
         this.x = setInterval(async () => {
-            //todo logout olduktan sonra backend 'e tokenları gönder expired yap yeni token üretmeye başla
             let token1 = window.localStorage.getItem('utid-1').split('-')[0];
             console.log({before:cookieParser()})
             axios.post(`${SERVER_URL}/login/agent/${token1}`,{}).then(response=>{
