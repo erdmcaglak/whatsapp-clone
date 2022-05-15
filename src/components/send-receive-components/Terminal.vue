@@ -116,7 +116,6 @@ export default {
             }
         },
         async pushLastRequests(){
-            console.log('-------terminal---------')
             if(this.terminalInput!=''){
                 let tempApiHolder = this.terminalInput.split(' ')[0].split('/')[1];
                 if(tempApiHolder===''){

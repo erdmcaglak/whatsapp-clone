@@ -32,6 +32,39 @@ export default [
       ctx.json(response.data)
     )
   }),
+
+
+  rest.post(`/payment/info`, async (req, res, ctx) => {
+    let reqObj = {
+      ...req.body,
+      cookies: req.cookies || {},
+    }
+    const response = await axios.post(`https://test.whapi.chat/payment/info`,reqObj).catch(err=>{
+      
+      console.log("err in /payment/info post")
+      console.log({err})
+      return {
+        data:{
+          cards:[
+            {
+              cardType:"mastercard",
+              cardNumber:"1234 **** **** 4587",
+              paymentDate:Date.now(),
+            },
+            {
+              cardType:"visa",
+              cardNumber:"1234 **** **** 6985",
+              paymentDate:Date.now(),
+            }
+          ],
+          billingEmail:"erdem.caglak@gmail.com"
+        }
+      }
+    })
+    return res(
+      ctx.json(response.data)
+    )
+  }),
   rest.post(`/payment/pay`, async (req, res, ctx) => {
     console.log({i:req.body})
     let reqObj = {
@@ -97,7 +130,6 @@ export default [
       ctx.json(response.data)
     )
   }),
-
   rest.post(`/account/accounts`, async (req, res, ctx) => {
     console.log('Mock accounts Post')
     let reqObj = {
@@ -114,7 +146,6 @@ export default [
       ctx.json(response.data)
     )
   }),
-
   rest.post(`/account/info`, async (req, res, ctx) => {
     console.log('Mock accounts/info Post')
     let reqObj = {
@@ -133,7 +164,6 @@ export default [
       ctx.json(response.data)
     )
   }),
-
   rest.post(`/login/agent`, async (req, res, ctx) => {
     let reqObj = {
       ...req.body,

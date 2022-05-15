@@ -63,8 +63,8 @@
                                 </transition>
                                 
                             </div>
-                            <div @click="sendToTerminal" class="send-button">
-                                <div class="button">
+                            <div  class="send-button">
+                                <div @click="sendToTerminal" class="button">
                                     SEND
                                 </div>
                             </div>
@@ -184,6 +184,8 @@ import {startCase,lowerCase} from "lodash"
 import {mapMutations} from "vuex"
 import Terminal from "@/components/send-receive-components/Terminal.vue"
 import {cookieParser,stringShorter} from "@/utils/utils.js"
+import axios from "axios"
+import {SERVER_URL} from "@/control.js"
 export default {
     data(){
         return{
@@ -218,31 +220,62 @@ export default {
         getStyle1(style,item){
             return item.type==='POST'?`${style};border: 1px solid #02AF02`:`${style};border:1px solid #3C79E6`
         },
-        sendToTerminal(){
-            for(let item of this.selectedApiObj.parameters){
-                if(item.inputHolder===''){
+        async sendToTerminal(){
+            const response = await axios.get(`${SERVER_URL}/account/selected/${cookieParser().token}`).catch(err=>{
+                console.log({err})
+                this.setAlert({
+                    title:'Can not get selected number',
+                    type:'danger'
+                })
+                return
+            })
+            console.log({response})
+            if(!response){
+                this.setAlert({
+                    title:'Server not responding',
+                    type:'danger'
+                })
+                return
+            }
+            if(response.data){
+                if(response.data == ""){
                     this.setAlert({
-                        title:"Required fields must be filled",
-                        type:'warning'
+                        title:'Please select a number from Whatsapp Numbers',
+                        type:'danger',
                     })
-                    return
+                     return
                 }
-            }
-            this.selectedApiForTerminal = _.cloneDeep(this.selectedApiObj);
-            this.curlCode = this.selectedApiObj[this.curlHolder]
-            for(let item of this.selectedApiObj.parameters){
-                this.curlCode = this.curlCode.replace(`{{${_.startCase(item.title)}}}`,item.inputHolder);
-                item.inputHolder = '';
-            }
-            this.curlCode = this.curlCode.replace('{{Token}}',this.cookieParser().token);
-            this.isOpenterminal = true;
-            setTimeout(() => {
-                document.getElementById('send-receive-main').scroll({
-                    top: 5000,
-                    behavior: 'smooth'
-                });
-            }, 100);
 
+                for(let item of this.selectedApiObj.parameters){
+                    if(item.inputHolder===''){
+                        this.setAlert({
+                            title:"Required fields must be filled",
+                            type:'warning'
+                        })
+                        return
+                    }
+                }
+                this.selectedApiForTerminal = _.cloneDeep(this.selectedApiObj);
+                this.curlCode = this.selectedApiObj[this.curlHolder]
+                for(let item of this.selectedApiObj.parameters){
+                    this.curlCode = this.curlCode.replace(`{{${_.startCase(item.title)}}}`,item.inputHolder);
+                    item.inputHolder = '';
+                }
+                this.curlCode = this.curlCode.replace('{{Token}}',this.cookieParser().token);
+                this.isOpenterminal = true;
+                setTimeout(() => {
+                    document.getElementById('send-receive-main').scroll({
+                        top: 5000,
+                        behavior: 'smooth'
+                    });
+                }, 100);
+            }
+            else{
+                this.setAlert({
+                    title:'Please select a number from Whatsapp Numbers',
+                    type:'danger',
+                })
+            }
         },
         routeDocumentation(){
             this.$router.push(this.$route.query.redirect || `/api-documentation`);

@@ -12,42 +12,46 @@
         </div>
         <div class="drop-and-base64">
             <div class="drop-wrapper">
-                <div class="card-icon">
+                <!-- <div class="card-icon">
                     <img class="icon" src="@/assets/icons/base-64.svg" alt="">
-                </div>
-                
+                </div> -->
                 <div class="drop-text">
                     Add your files here
                 </div>
                 <div class="drop">
                     <input @change="handleFileInput" type="file">
+                    <img class="base-64-button" src="@/assets/icons/base64-button.svg" alt="">
                     <div class="upload-text">Click button or drag to insert</div>
                 </div>
             </div>
             <div class="base-64-wrapper">
-                <div class="card-icon">
+                <!-- <div class="card-icon">
                     <img class="icon" src="@/assets/icons/drop-file.svg" alt="">
-                </div>
+                </div> -->
                 <div class="base-64-text">
                     Base64
                 </div>
-                <div class="base-64">
-                    {{base64}}
+                <div class="base-64-content-wrapper">
+                    <div class="base-64">
+                        {{base64}}
+                    </div>
+                    <div @click="copyBase64" class="copy">
+                        <Icon 
+                            icon="copy.svg"
+                            :width="{
+                                default:'25',
+                                lg:'23',
+                                md:'21',
+                                sm:'19',
+                                xs:'17',
+                            }"
+                            pointer
+                            iconColor="#3bb0f0"
+                        />
+                    </div>
                 </div>
-                <div @click="copyBase64" class="copy">
-                    <Icon 
-                        icon="copy.svg"
-                        :width="{
-                            default:'25',
-                            lg:'23',
-                            md:'21',
-                            sm:'19',
-                            xs:'17',
-                        }"
-                        pointer
-                        iconColor="#3bb0f0"
-                    />
-                </div>
+                
+                
             </div>
         </div>
     </div>
@@ -77,6 +81,12 @@ export default {
                     type:'success'
                 })
             }
+            else{
+                this.setAlert({
+                    title:"Base64 is empty",
+                    type:'warning'
+                })
+            }
         },
         handleFileInput(e) {
             var file  = e.target.files[0];
@@ -100,13 +110,12 @@ export default {
     height: 100%;
     overflow: hidden;
     @include d-flex(column,space-around,center);
+    gap: 30px;
     .converter-header-wrapper{
+        flex: 0 0 auto;
         width: 100%;
         @include d-flex-center;
-        flex: 2 0 1px;
         .converter-header{
-            background: rgba(245, 249, 255, 0.5);
-            box-shadow: 0px 6px 4px rgba(183, 207, 243, 0.25);
             border-radius: 10px;
             padding: 15px;
             width: 50%;
@@ -141,37 +150,39 @@ export default {
     }
     
     .drop-and-base64{
-        flex: 5 0 1px;
-        @include d-flex(row,space-around,center);
+        flex: 1 0 1px;
+        @include d-flex(column,space-around,center);
         width: 100%;
+        gap: 50px;
+        padding: 30px;
         .drop-wrapper{
             @include d-flex(column,center,center);
             background: rgba(245, 249, 255, 0.5);
             box-shadow: 0px 6px 4px rgba(183, 207, 243, 0.25);
             border-radius: 15px;
-            padding: 50px;
+            padding: 20px;
             gap: 10px;
             height: 90%;
-            width: 45%;
+            width: 90%;
             position: relative;
-            .card-icon{
-                user-select: none;
-                pointer-events: none;
-                position: absolute;
-                left: 50%;
-                transform: translate(-50%,0);
-                top: -50px;
-                padding: 30px;
-                @include d-flex-center;
-                background-color: #3EB9FC;
-                border-radius: 99px;
-                .icon{
-                    width: 40px;
-                }
-            }
+            // .card-icon{
+            //     user-select: none;
+            //     pointer-events: none;
+            //     position: absolute;
+            //     left: 50%;
+            //     transform: translate(-50%,0);
+            //     top: -50px;
+            //     padding: 30px;
+            //     @include d-flex-center;
+            //     background-color: #3EB9FC;
+            //     border-radius: 99px;
+            //     .icon{
+            //         width: 40px;
+            //     }
+            // }
             .drop-text{
                 flex: 0 0 auto;
-                width: 100%;
+                width: 50%;
                 @include d-flex(row,flex-start,center);
                 font-size: 1.7rem;
                 color: #3C6DB2;
@@ -179,10 +190,13 @@ export default {
             .drop{
                 flex: 1 0 1px;
                 background-color: #fff;
-                width: 100%;
+                width: 50%;
                 border-radius: 10px;
-                @include d-flex-center;
+                @include d-flex(column,center,center);
                 position: relative;
+                .base-64-button{
+                    width: 75px;
+                }
                 .upload-text{
                     @include d-flex-center;
                     font-size: 1.7rem;
@@ -208,52 +222,59 @@ export default {
             background: rgba(245, 249, 255, 0.5);
             box-shadow: 0px 6px 4px rgba(183, 207, 243, 0.25);
             border-radius: 15px;
-            padding: 50px;
+            padding: 20px;
             gap: 10px;
             height: 90%;
-            width: 45%;
-            .card-icon{
-                user-select: none;
-                pointer-events: none;
-                position: absolute;
-                left: 50%;
-                transform: translate(-50%,0);
-                top: -50px;
-                padding: 30px;
-                @include d-flex-center;
-                background-color: #3EB9FC;
-                border-radius: 99px;
-                .icon{
-                    width: 40px;
-                }
-            }
+            width: 90%;
+            // .card-icon{
+            //     user-select: none;
+            //     pointer-events: none;
+            //     position: absolute;
+            //     left: 50%;
+            //     transform: translate(-50%,0);
+            //     top: -50px;
+            //     padding: 30px;
+            //     @include d-flex-center;
+            //     background-color: #3EB9FC;
+            //     border-radius: 99px;
+            //     .icon{
+            //         width: 40px;
+            //     }
+            // }
             .base-64-text{
                 flex: 0 0 auto;
-                width: 100%;
+                width: 50%;
                 @include d-flex(row,flex-start,center);
                 font-size: 1.7rem;
                 color: #3C6DB2;
             }
-            .base-64{
+            .base-64-content-wrapper{
                 flex: 1 0 1px;
-                background-color: #fff;
-                border-radius: 10px;
+                @include d-flex-center;
+                width:50%;
                 position: relative;
-                word-break: break-all;
-                overflow: auto;
-                padding: 10px;
-                width:100%;
-                &::-webkit-scrollbar{
-                    display: none;
+                .base-64{
+                    flex: 1 0 1px;
+                    background-color: #fff;
+                    border-radius: 10px;
+                    position: relative;
+                    word-break: break-all;
+                    overflow: auto;
+                    padding: 10px;
+                    width:100%;
+                    height: 100%;
+                    &::-webkit-scrollbar{
+                        display: none;
+                    }
                 }
-                
+                .copy{
+                    cursor: pointer;
+                    position: absolute;
+                    right: 10px;
+                    bottom: 10px;
+                }
             }
-            .copy{
-                cursor: pointer;
-                position: absolute;
-                right: 100px;
-                bottom: 90px;
-            }
+            
         }
     }
 }

@@ -125,10 +125,6 @@ router.beforeEach(async (to, from, next) => {
       
         if(response.data?.success){
           next()
-          store.commit('setAlert',{
-            title:'Login Succesful',
-            type:'success'
-          })
           return
         }
         else{

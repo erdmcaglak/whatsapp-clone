@@ -257,6 +257,7 @@ export default {
         gap: 5px;
         padding: 5px 0;
         .user-info{
+            font-size: 2rem;
             @include d-flex(row,flex-start,center);
             gap: 15px;
             padding: 10px 15px;

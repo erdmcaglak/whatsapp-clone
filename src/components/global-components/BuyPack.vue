@@ -2,13 +2,14 @@
     <div class="buy-pack-main">
         <div class="buy-pack-wrapper">
             <div class="main-wrapper">
-                <div class="buy-text">
+                <!-- <div class="buy-text">
                     Buy The Pack and Start Using
                     <span style="font-size:3rem;font-weight:500">Follow the movements of your contact list</span>
                 </div>
                 <div @click="routeNumbers" class="buy-now">
                     BUY NOW
-                </div>
+                </div> -->
+                COMING SOON
             </div>
         </div>
     </div>
@@ -38,6 +39,9 @@ export default {
         border-radius: 10px;
         @include box-shadow(0,4px,8px,2px,rgba(183, 207, 243, 0.25));
         .main-wrapper{
+            font-size: 4rem;
+            color: #3EB9FC;
+            font-weight: 700;
             @include d-flex(column,space-evenly,center);
             width: 100%;
             height: 100%;

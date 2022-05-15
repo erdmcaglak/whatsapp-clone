@@ -60,6 +60,7 @@
             </div>
         </div>
         <transition name="fade">
+            //TODO modal kapandığında liste güncellenmeli
             <StepperModal :numberListArr.sync="numberList" v-if="isOpenAddAccountModal" :openModal.sync="isOpenAddAccountModal"/>
         </transition>
     </div>
@@ -136,7 +137,7 @@ export default {
                 this.numberlist = _.cloneDeep(this.tempNumberList);
             }
             else{
-                this.numberlist = _.cloneDeep(this.tempNumberList.filter(e=>_.upperCase(e.number).includes(_.upperCase(this.accountSearch)) || _.upperCase(e.name).includes(_.upperCase(this.accountSearch))))
+                this.numberlist = _.cloneDeep(this.tempNumberList.filter(e=>_.upperCase(e.remoteJid).includes(_.upperCase(this.accountSearch)) || _.upperCase(e.title).includes(_.upperCase(this.accountSearch))))
             }
         },
         ...mapMutations([
@@ -153,14 +154,6 @@ export default {
             "getLang",
             "getWhapiNumberList"
         ])
-    },
-    destroyed(){
-        if(this.selectedNumber === ''){
-            this.setAlert({
-                title:'Number not selected',
-                type:'warning',
-            })
-        }
     },
     async mounted(){
         let {token} = cookieParser()

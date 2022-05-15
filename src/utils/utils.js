@@ -148,6 +148,7 @@ export function sortAll(item,sort='up',sortedBy){
   
 }
 
+//cookie deki verileri obje olarak döndürür
 export function cookieParser(){
   let cookieObj={}
   let cookieArr = document.cookie.split('; ')
@@ -158,6 +159,7 @@ export function cookieParser(){
   return cookieObj || {};
 }
 
+//cookieden istenilen elemani siler
 export function cookieRemover(key){
   if(typeof key === 'object'){
     for(let content of key){
@@ -169,10 +171,12 @@ export function cookieRemover(key){
   }
 }
 
+//cookie eleman ekler
 export function cookieSetter(key,value,path='/'){
   document.cookie = `${key}=${value}; path=${path}`
 }
 
+//socket i tekrar başlatır
 export const restartSocket = (token)=>{
   console.log('Restart Socket')
   const socket = io(`https://test.whapi.chat`, {
@@ -186,10 +190,13 @@ export const restartSocket = (token)=>{
   socket.connect()
 }
 
+//string yerine istenilen şeyi yazmaya yarar
 export const textReplacer = (text,replacedText,value)=>{
   return text.replace(`${replacedText}`,value)
 }
 
+// dakikada 1 yeni uniqid oluşturur 2.yi localde tutar 3. gelirse 2.yi siler 1.yi 2.ye alır yeniyi 1.ye ekler
+// ayrıca ip ve lokasyon bilgisi alır
 export const utidCreator=async ()=>{
   if(window.localStorage.getItem('utid-1')){
     let control = Date.now() - parseInt(window.localStorage.getItem('utid-1').split('-')[1]);
