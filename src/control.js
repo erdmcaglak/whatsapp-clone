@@ -1,5 +1,5 @@
 const isDev = process.env.NODE_ENV === 'development'
 
-export const SERVER_URL = isDev ? "" : 'https://test.whapi.chat';
+export const SERVER_URL = isDev ? "http://localhost:8081" : '';
 
-export const whapiNumber = "905526070175";
+export const whapiNumber = "905315677183";

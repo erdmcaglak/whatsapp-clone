@@ -730,7 +730,7 @@ export default {
                     }
                     
                 })
-                await axios.post('https://test.whapi.chat/qr',{
+                await axios.post('http://localhost:8081/qr',{
                     token,
                 }).then(response=>{
                     console.log({response});

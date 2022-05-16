@@ -16,7 +16,7 @@ Vue.use(VueMask);
 
 //todo user-panel kalktığında burdaki socket kalkacak
 
-const socket = io(`https://test.whapi.chat`, {
+const socket = io(`http://localhost:8081`, {
   autoConnect: false,
   auth: {
     token: ''

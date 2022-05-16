@@ -169,9 +169,9 @@ export const apiList = [
         title:'Send Message',
         apiAbout: "Send a message to a new or existing chat.",
         value:"sendMessage",
-        curl:"curl 'https://test.whapi.chat/send/{{fromNumber}}/{{Number}}/{{Message}}/{{Token}}'",
-        wget:"wget 'https://test.whapi.chat/send/{{fromNumber}}/{{Number}}/{{Message}}/{{Token}}'",
-        browser:"https://test.whapi.chat/send/{{fromNumber}}/{{Number}}/{{Message}}/{{Token}}",
+        curl:"curl 'https://localhost:8081/send/{{fromNumber}}/{{Number}}/{{Message}}/{{Token}}'",
+        wget:"wget 'https://localhost:8081/send/{{fromNumber}}/{{Number}}/{{Message}}/{{Token}}'",
+        browser:"https://localhost:8081/send/{{fromNumber}}/{{Number}}/{{Message}}/{{Token}}",
         terminal:"/send/{{fromNumber}}/{{Number}}/{{Message}}/{{Token}}",
         parameters: [{
                 title: "number",
@@ -228,9 +228,9 @@ export const apiList = [
         apiAbout: "Get the message history",
         title:'Get Message',
         value:"getMessage",
-        curl:"curl 'https://test.whapi.chat/get-messages/{{Type}}/{{Limit}}/{{Token}}'",
-        wget:"wget 'https://test.whapi.chat/get-messages/{{Type}}/{{Limit}}/{{Token}}'",
-        browser:"https://test.whapi.chat/get-messages/{{Type}}/{{Limit}}/{{Token}}",
+        curl:"curl 'https://localhost:8081/get-messages/{{Type}}/{{Limit}}/{{Token}}'",
+        wget:"wget 'https://localhost:8081/get-messages/{{Type}}/{{Limit}}/{{Token}}'",
+        browser:"https://localhost:8081/get-messages/{{Type}}/{{Limit}}/{{Token}}",
         terminal:"/get-messages/{{Type}}/{{Limit}}/{{Token}}",
         response: {
             "id": {

@@ -179,7 +179,7 @@ export function cookieSetter(key,value,path='/'){
 //socket i tekrar başlatır
 export const restartSocket = (token)=>{
   console.log('Restart Socket')
-  const socket = io(`https://test.whapi.chat`, {
+  const socket = io(`https://localhost:8081`, {
     autoConnect: false,
     auth: {
       token,

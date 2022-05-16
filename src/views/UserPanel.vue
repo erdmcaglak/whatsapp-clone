@@ -29,7 +29,7 @@ export default {
     methods:{
         socketConnection(){
             console.log('Restart Socket')
-            const socket = io(`https://test.whapi.chat`, {
+            const socket = io(`https://localhost:8081`, {
                 autoConnect: false,
                 auth: {
                     token: '',
@@ -50,7 +50,7 @@ export default {
         ]),
         getQr(){
             this.socketConnection();
-            axios.post('https://test.whapi.chat/qr',{
+            axios.post('https://localhost:8081/qr',{
                 token:this.token,
             }).then(response=>{
                 console.log({response});

@@ -5,7 +5,7 @@ export default [
   rest.get('/send/:fromNumber/:toNumber/:message/:token', async (req, res, ctx) => {
     const {fromNumber,toNumber,message,token} = req.params
     console.log({fromNumber,toNumber,message,token})
-    const response = await axios.get(`https://test.whapi.chat/send/${fromNumber}/${toNumber}/${message}/${token}`,).catch(err=>{
+    const response = await axios.get(`https://localhost:8081/send/${fromNumber}/${toNumber}/${message}/${token}`,).catch(err=>{
       console.log("err in send get")
       console.log(err)
 
@@ -20,7 +20,7 @@ export default [
     console.log('-----------selected--------')
     const {token} = req.params
     console.log({token})
-    const response = await axios.get(`https://test.whapi.chat/account/selected/${token}`,).catch(err=>{
+    const response = await axios.get(`https://localhost:8081/account/selected/${token}`,).catch(err=>{
       console.log("err in send get")
       console.log(err)
 
@@ -39,7 +39,7 @@ export default [
       ...req.body,
       cookies: req.cookies || {},
     }
-    const response = await axios.post(`https://test.whapi.chat/payment/info`,reqObj).catch(err=>{
+    const response = await axios.post(`https://localhost:8081/payment/info`,reqObj).catch(err=>{
       
       console.log("err in /payment/info post")
       console.log({err})
@@ -72,7 +72,7 @@ export default [
       ...req.body,
       cookies: req.cookies || {},
     }
-    const response = await axios.post(`https://test.whapi.chat/payment/pay`,reqObj).catch(err=>{
+    const response = await axios.post(`https://localhost:8081/payment/pay`,reqObj).catch(err=>{
       
       console.log("err in /payment/pay post")
       console.log({err})
@@ -89,7 +89,7 @@ export default [
       ...req.body,
       cookies: req.cookies || {},
     }
-    const response = await axios.post(`https://test.whapi.chat/account/selected`,reqObj).catch(err=>{
+    const response = await axios.post(`https://localhost:8081/account/selected`,reqObj).catch(err=>{
       
       console.log("err in /payment/pay post")
       console.log({err})
@@ -106,7 +106,7 @@ export default [
       ...req.body,
       cookies: req.cookies || {},
     }
-    const response = await axios.post(`https://test.whapi.chat/account/packages`,reqObj).catch(err=>{
+    const response = await axios.post(`https://localhost:8081/account/packages`,reqObj).catch(err=>{
       
       console.log("err in /account/packages post")
       console.log({err})
@@ -121,7 +121,7 @@ export default [
       ...req.body,
       cookies: req.cookies || {},
     }
-    const response = await axios.post(`https://test.whapi.chat/number/list`,reqObj).catch(err=>{
+    const response = await axios.post(`https://localhost:8081/number/list`,reqObj).catch(err=>{
       console.log(err)
       return {data:{
         success:true,
@@ -137,7 +137,7 @@ export default [
       ...req.body,
       cookies: req.cookies || {},
     }
-    const response = await axios.post(`https://test.whapi.chat/account/accounts`,reqObj).catch(err=>{
+    const response = await axios.post(`https://localhost:8081/account/accounts`,reqObj).catch(err=>{
       
       console.log("err in /account/accounts post")
       console.log({err})
@@ -153,7 +153,7 @@ export default [
       ...req.body,
       cookies: req.cookies || {},
     }
-    const response = await axios.post(`https://test.whapi.chat/account/info`,reqObj).catch(err=>{
+    const response = await axios.post(`https://localhost:8081/account/info`,reqObj).catch(err=>{
       
       console.log("err in /account/info post")
       console.log({err})
@@ -169,7 +169,7 @@ export default [
     let reqObj = {
       ...req.body,
     }
-    const response = await axios.post(`https://test.whapi.chat/login/agent`,reqObj).catch(err=>{
+    const response = await axios.post(`https://localhost:8081/login/agent`,reqObj).catch(err=>{
       console.log("err in /login/agent post")
       console.log(err)
       return {data: {}}
@@ -182,7 +182,7 @@ export default [
     let reqObj = {
       ...req.body,
     }
-    const response = await axios.post(`https://test.whapi.chat/login/session`,reqObj).catch(err=>{
+    const response = await axios.post(`https://localhost:8081/login/session`,reqObj).catch(err=>{
       console.log("err in /login/session post")
       console.log(err)
       return {data: {}}
@@ -196,7 +196,7 @@ export default [
     let reqObj = {
       ...req.body,
     }
-    const response = await axios.post(`https://test.whapi.chat/login/agent/${uid}`,reqObj).catch(err=>{
+    const response = await axios.post(`https://localhost:8081/login/agent/${uid}`,reqObj).catch(err=>{
       console.log("err in /login/agent/:uid post")
       console.log({err})
       return {data: {}}
