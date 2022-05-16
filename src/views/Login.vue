@@ -358,10 +358,15 @@ export default {
             .about-pricing{
                 border-radius: 20px;
                 padding: 6px 18px;
-                background: linear-gradient(180deg, #3DBAFB 0%, #608FFB 100%);
-                color: #fff;
+                border:1px solid #3DBAFB;
+                color: #3DBAFB;
                 font-size: 1.8rem;
                 cursor: pointer;
+                transition: all .1s linear;
+                &:hover{
+                    background: linear-gradient(180deg, #3DBAFB 0%, #608FFB 100%);
+                    color: #fff;
+                }
             }
         }
     }

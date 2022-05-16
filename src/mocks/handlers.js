@@ -65,6 +65,7 @@ export default [
       ctx.json(response.data)
     )
   }),
+  
   rest.post(`/payment/pay`, async (req, res, ctx) => {
     console.log({i:req.body})
     let reqObj = {
